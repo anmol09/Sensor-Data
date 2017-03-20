@@ -19,9 +19,11 @@ public class LightSensorEventListener implements SensorEventListener {
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+
         if(event.sensor.getType()==Sensor.TYPE_LIGHT){
             lightIntensity = event.values[0];
-            output.setText(String.valueOf(lightIntensity));
+            output.setText("Light Sensor Reading: \n"+String.valueOf(lightIntensity));
 
 
         }
