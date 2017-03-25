@@ -7,6 +7,7 @@ import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by anmolarora on 20/03/17.
@@ -25,7 +28,6 @@ public class accelerometerSensorEventListener implements SensorEventListener {
     double x,y,z;
     LineGraphView graph;
     Button saveReading;
-    File file;
     private String[][] readings = new String [100][3];
     public int counter = 0;
     public boolean flag = false;
@@ -67,28 +69,15 @@ public class accelerometerSensorEventListener implements SensorEventListener {
 
             DecimalFormat precision =  new DecimalFormat("0.00");
 
-            saveReading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                try {
-                    myExternalFile = new File(Environment.getExternalStorageState());
-                    PrintWriter pw = new PrintWriter(myExternalFile);
-                    for (int i = 0; i < 99; i++) {
-                        pw.println(readings[i]);
-                    }
-                    pw.close();
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
-                }
-            });
+
 
             readings[counter][0]= precision.format(x);
             readings[counter][1]= precision.format(y);
             readings[counter][2]= precision.format(z);
 
-            counter++ ;
 
+
+            counter++ ;
 
             if(counter>98){
                 flag =true;
@@ -110,6 +99,26 @@ public class accelerometerSensorEventListener implements SensorEventListener {
                 counter = 0 ;
 
             }
+
+            saveReading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        myExternalFile = new File(Environment.getExternalStorageDirectory()+"Data1.csv");
+                        if(myExternalFile.createNewFile()){
+                            Log.d(TAG, "File created ");
+                        }
+
+                        PrintWriter pw = new PrintWriter(myExternalFile);
+                        for (int i = 0; i < 99; i++) {
+                            pw.println(readings[i]);
+                        }
+                        pw.close();
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
 
 
