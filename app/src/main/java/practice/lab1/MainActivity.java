@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Sensor rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         SensorEventListener l = new LightSensorEventListener(light_text); // Declaring light sensors
-        SensorEventListener acc = new accelerometerSensorEventListener(acc_text,graph,saveReading);
+        SensorEventListener acc = new accelerometerSensorEventListener(getApplicationContext(), acc_text,graph,saveReading);
         SensorEventListener magnetic = new magneticSensorEventListener(magnetic_text);
         SensorEventListener rotation = new rotationSensorEventListener(rotation_text);
 

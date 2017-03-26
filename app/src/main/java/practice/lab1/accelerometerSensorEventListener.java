@@ -1,5 +1,6 @@
 package practice.lab1;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -29,17 +30,17 @@ public class accelerometerSensorEventListener implements SensorEventListener {
     private static String[][] readings = new String[100][3];
     public static int counter = 0;
     public static boolean flag = false;
+    private Context c;
 
 
 
 
 
-    public accelerometerSensorEventListener(TextView output, LineGraphView graph, Button saveReading){
+    public accelerometerSensorEventListener(Context c, TextView output, LineGraphView graph, Button saveReading){
         this.output = output;
         this.graph  = graph;
         this.saveReading = saveReading;
-
-
+        this.c = c;
     }
 
     public void writeToFile() {
@@ -47,7 +48,7 @@ public class accelerometerSensorEventListener implements SensorEventListener {
         PrintWriter printWriter = null;
         try {
 
-                 file = new File(Environment.getExternalStorageDirectory(), "Data1.csv");
+                 file = new File(c.getExternalFilesDir("LAB1"),"Data1.csv");
                  printWriter = new PrintWriter(file);
 
             for(int i = 0; i<100; i++){
@@ -100,7 +101,7 @@ public class accelerometerSensorEventListener implements SensorEventListener {
             if(flag){
                 String temp1 = null;
 
-                for( int i=99; i>0;i++){
+                for( int i=99; i>0;i--){
                     temp1 = readings[i-1][0] + ",";
                     readings[i][0] = temp1;
 
