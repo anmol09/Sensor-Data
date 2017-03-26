@@ -26,7 +26,7 @@ public class accelerometerSensorEventListener implements SensorEventListener {
     double x,y,z;
     LineGraphView graph;
     Button saveReading;
-    private static Double[][] readings = new Double[100][3];
+    private static String[][] readings = new String[100][3];
     public static int counter = 0;
     public static boolean flag = false;
 
@@ -79,15 +79,15 @@ public class accelerometerSensorEventListener implements SensorEventListener {
 
         if(!flag) {
 
-                readings[counter][0] = x;
-                readings[counter][1] = (y);
-                readings[counter][2] = (z);
+                readings[counter][0] = precision.format(x);
+                readings[counter][1] = precision.format(y);
+                readings[counter][2] = precision.format(z);
             }
 
         if(flag && (counter>99)){
-            readings[0][0]= (x);
-            readings[0][1]= (y);
-            readings[0][2]= (z);
+            readings[0][0]= precision.format(x);
+            readings[0][1]= precision.format(y);
+            readings[0][2]= precision.format(z);
         }
 
 
@@ -98,13 +98,13 @@ public class accelerometerSensorEventListener implements SensorEventListener {
             }
 
             if(flag){
-                Double temp1 = null;
+                String temp1 = null;
 
                 for( int i=99; i>0;i++){
-                    temp1 = readings[i-1][0];
+                    temp1 = readings[i-1][0] + ",";
                     readings[i][0] = temp1;
 
-                    temp1 = readings[i-1][1];
+                    temp1 = readings[i-1][1] + ",";
                     readings[i][1]= temp1;
 
                     temp1 = readings[i-1][2];
