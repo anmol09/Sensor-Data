@@ -3,6 +3,7 @@ package practice.lab1;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -19,6 +20,7 @@ public class LightSensorEventListener implements SensorEventListener {
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
+        Log.d("Function Called", "onSensorChanged:Accelerometer ");
 
 
         if(event.sensor.getType()==Sensor.TYPE_LIGHT){

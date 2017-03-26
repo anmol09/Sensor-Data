@@ -13,11 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by anmolarora on 20/03/17.
@@ -28,13 +26,11 @@ public class accelerometerSensorEventListener implements SensorEventListener {
     double x,y,z;
     LineGraphView graph;
     Button saveReading;
-    private String[][] readings = new String [100][3];
-    public int counter = 0;
-    public boolean flag = false;
+    private static Double[][] readings = new Double[100][3];
+    public static int counter = 0;
+    public static boolean flag = false;
 
-    private String filename = "SampleData.csv";
-    private String filepath = "MyFileStorage";
-    File myExternalFile;
+
 
 
 
@@ -45,6 +41,84 @@ public class accelerometerSensorEventListener implements SensorEventListener {
 
 
     }
+
+    public void writeToFile() {
+        File file;
+        PrintWriter printWriter = null;
+        try {
+
+                 file = new File(Environment.getExternalStorageDirectory(), "Data1.csv");
+                 printWriter = new PrintWriter(file);
+
+            for(int i = 0; i<100; i++){
+                printWriter.println(readings[i]);
+            }
+
+        } catch (IOException e){
+
+                Log.d("Data", "File Write Fail: " + e.toString());
+            }
+            finally{
+
+                if(printWriter != null) {    // NULL pointer exception handling
+                printWriter.flush();
+                printWriter.close();
+            }
+
+            //Notice that we are using Log.d.
+            Log.d("Data", "File Write Ended.");
+        }
+
+
+        }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void writeToArray() {
+
+        DecimalFormat precision =  new DecimalFormat("0.00");
+
+
+        if(!flag) {
+
+                readings[counter][0] = x;
+                readings[counter][1] = (y);
+                readings[counter][2] = (z);
+            }
+
+        if(flag && (counter>99)){
+            readings[0][0]= (x);
+            readings[0][1]= (y);
+            readings[0][2]= (z);
+        }
+
+
+            counter++ ;
+
+            if(counter>99) {
+                flag =true;
+            }
+
+            if(flag){
+                Double temp1 = null;
+
+                for( int i=99; i>0;i++){
+                    temp1 = readings[i-1][0];
+                    readings[i][0] = temp1;
+
+                    temp1 = readings[i-1][1];
+                    readings[i][1]= temp1;
+
+                    temp1 = readings[i-1][2];
+                    readings[i][2]= temp1;
+
+                }
+
+
+            }
+
+    }
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -63,61 +137,18 @@ public class accelerometerSensorEventListener implements SensorEventListener {
 
 
 
-
-
-
-
             DecimalFormat precision =  new DecimalFormat("0.00");
 
 
 
-            readings[counter][0]= precision.format(x);
-            readings[counter][1]= precision.format(y);
-            readings[counter][2]= precision.format(z);
-
-
-
-            counter++ ;
-
-            if(counter>98){
-                flag =true;
-            }
-            if(flag){
-                String temp1 = null;
-
-                for( int i=99; i>0;i++){
-                    temp1 = readings[i-1][0];
-                    readings[i][0] = temp1;
-
-                    temp1 = readings[i-1][1];
-                    readings[i][1]= temp1;
-
-                    temp1 = readings[i-1][2];
-                    readings[i][2]= temp1;
-
-                }
-                counter = 0 ;
-
-            }
+           writeToArray();
 
             saveReading.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        myExternalFile = new File(Environment.getExternalStorageDirectory()+"Data1.csv");
-                        if(myExternalFile.createNewFile()){
-                            Log.d(TAG, "File created ");
-                        }
-
-                        PrintWriter pw = new PrintWriter(myExternalFile);
-                        for (int i = 0; i < 99; i++) {
-                            pw.println(readings[i]);
-                        }
-                        pw.close();
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    writeToFile();
                 }
+
             });
 
 

@@ -34,6 +34,7 @@ public class magneticSensorEventListener implements SensorEventListener {
         String value = String.format("(%f,%f,%f)",x,y,z);
 
         if(event.sensor.getType()== Sensor.TYPE_MAGNETIC_FIELD){
+
             x = event.values[0];
             DecimalFormat precision =  new DecimalFormat("0.00");
 
