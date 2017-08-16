@@ -1,5 +1,5 @@
-# UW Gesture Controlled 2048
-We all have played 2048 game on our phone at some point of time. 
+# A very basic Android Application to get data off phone sensors for manipulation.
 
-This is a gesture controlled android application in the making, for the 2048 game.
+This is a very basic android application for grabing and manipulating sensor data from various phone sensors, mainly Accelerometer, Light Sensor, Magnetic Sensor and Rotation sensor. 
 
+Implemented sensor event listeners and added a button for extracting this data in a csv format, on the phone.
